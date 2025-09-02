@@ -1,0 +1,53 @@
+.movie__card {
+  border: solid 1px var(--dark-c);
+  border-radius: 1rem;
+  padding: 0.75rem;
+  background-color: var(--light-c);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+.movie__card > button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+.movie__card > button h2 {
+  font-size: 1.75rem;
+  line-height: 2rem;
+  font-weight: 600;
+}
+.movie__card > button span {
+  font-size: 2.5rem;
+  line-height: 2.75rem;
+  font-weight: 600;
+  transition: transform 0.25s ease-in-out;
+}
+.movie__card > button span.is-open {
+  transform: rotate(90deg);
+}
+.movie__card p {
+  font-size: 1.25rem;
+  line-height: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.movie__card p strong {
+  font-weight: 700;
+}
+
+.delete__button {
+  margin-top: 1rem;
+  border: solid 1px var(--dark-c);
+  background-color: var(--light-c);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+}
+
+.movie__card-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-heigh 0.4s ease-in-out;
+}
+.movie__card-content.is-open {
+  max-height: 500px;
+}

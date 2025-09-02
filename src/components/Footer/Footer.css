@@ -1,0 +1,35 @@
+.footer {
+  background-color: var(--dark-c);
+  padding: 1.5rem 0;
+  margin-top: auto;
+}
+.footer p {
+  color: var(--accent-light-c);
+  font-size: 1.25rem;
+  line-height: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+.footer p span {
+  color: var(--light-c);
+}
+.footer a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.25rem;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+  border-radius: 50%;
+  overflow: hidden;
+  transition: transform 0.8s ease-in-out;
+  filter: drop-shadow(0 0 1rem var(--accent-light-c));
+}
+.footer a:hover {
+  transform: rotate(360deg);
+}
+.footer img {
+  width: 100%;
+}

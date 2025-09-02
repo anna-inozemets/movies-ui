@@ -1,0 +1,164 @@
+.modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+}
+.modal.is-open {
+  opacity: 1;
+  pointer-events: all;
+}
+.modal__content {
+  width: 90%;
+  max-width: 780px;
+  max-height: 80vh;
+  background-color: var(--light-c);
+  border-radius: 1rem;
+  padding: 1rem;
+}
+.modal__button-close {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  aspect-ratio: 1 / 1;
+  margin-left: auto;
+}
+.modal__button-close span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: 100%;
+  height: 1.35px;
+  background-color: var(--dark-c);
+  transition: transform 0.4s ease-in-out, background-color 0.4s ease-in-out;
+}
+.modal__button-close span:first-child {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.modal__button-close span:last-child {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+.modal__button-close:hover span:first-child {
+  transform: translate(-50%, -50%) rotate(225deg);
+  background-color: var(--accent-c);
+}
+.modal__button-close:hover span:last-child {
+  transform: translate(-50%, -50%) rotate(-225deg);
+  background-color: var(--accent-c);
+}
+.modal__form {
+
+}
+.modal__form label {
+  display: block;
+  padding: 0.75rem 0;
+  border-bottom: solid 1px var(--dark-c);
+}
+.modal__form label p {
+  font-size: 1rem;
+  line-height: 1.25em;
+  margin-bottom: 0.25rem;
+}
+.modal__form label input {
+  display: block;
+  width: 100%;
+  padding: 0.15rem;
+  font-size: 1rem;
+  line-height: 1.25rem;
+  font-family: inherit;
+  border: solid 1px var(--dark-c);
+  border-radius: 0.25rem;
+}
+
+.modal__movie-format {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0.75rem 0;
+  border-bottom: solid 1px var(--dark-c);
+}
+.modal__movie-format label {
+  width: 30%;
+  padding: 0.5rem;
+  border: solid 1px var(--dark-c);
+  cursor: pointer;
+  border-radius: 4rem;
+  opacity: 0.75;
+  transition: all 0.4s ease-in-out;
+}
+.modal__movie-format label.active {
+  opacity: 1;
+  background-color: var(--dark-c);
+  color: var(--light-c);
+}
+.modal__movie-format label input {
+  display: none;
+}
+.modal__movie-format label p {
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.modal_actors {
+  padding: 0.75rem 0;
+}
+.modal_actors p {
+  font-size: 1rem;
+  line-height: 1.25em;
+  margin-bottom: 0.25rem;
+}
+.modal_actors .modal_actor-input-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 0.5rem;
+}
+.modal_actors .modal_actor-input-wrapper input {
+  display: block;
+  width: 100%;
+  padding: 0.15rem;
+  font-size: 1rem;
+  line-height: 1.25rem;
+  font-family: inherit;
+  border: solid 1px var(--dark-c);
+  border-radius: 0.25rem;
+}
+.modal_actors .modal_actor-input-wrapper button {
+  width: 25px;
+  min-width: 25px;
+  padding: 0.15rem;
+  font-size: 1rem;
+  line-height: 1.25rem;
+  font-weight: 700;
+  border: solid 1px var(--dark-c);
+  border-radius: 0.25rem;
+}
+.modal_actors .modal_actor-input-wrapper + button {
+  padding: 0.15rem;
+  font-size: 0.8rem;
+  line-height: 1.25rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+button.modal_send {
+  border-radius: 0.25rem;
+  width: 100%;
+  padding: 0.25rem;
+  font-size: 1rem;
+  line-height: 1.25rem;
+  font-weight: 700;
+  background-color: var(--dark-c);
+  color: var(--light-c);
+  text-align: center;
+}

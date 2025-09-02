@@ -1,0 +1,21 @@
+.header {
+  background-color: var(--dark-c);
+  padding: 1.5rem 0;
+}
+.header .container {
+  align-items: center;
+  justify-content: space-between;
+}
+.header img {
+  width: 4.25rem;
+  aspect-ratio: 1 / 1;
+  border-radius: 0.5rem;
+}
+.header h1 {
+  color: var(--light-c);
+  font-size: 2.5rem;
+  line-height: 2.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.5rem;
+}

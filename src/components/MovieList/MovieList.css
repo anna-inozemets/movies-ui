@@ -1,0 +1,27 @@
+.movie__list {
+  padding: 1.5rem 0;
+}
+.movie__list .container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 2rem;
+  column-gap: 1.25rem;
+}
+
+@media screen and (max-width: 1024px) {
+  .movie__list .container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .movie__list .container {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .movie__list .container {
+    row-gap: 1rem;
+  }
+}

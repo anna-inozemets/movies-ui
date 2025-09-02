@@ -1,0 +1,59 @@
+.control-bar {
+  background-color: var(--accent-c);
+  padding: 1.5rem 0;
+}
+.control-bar__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 1.15rem;
+}
+.control-bar__top input {
+  display: block;
+  width: calc(100% - 2.5rem);
+  padding: 0.5rem 0.25rem;
+  font-size: 1rem;
+  line-height: 1.25rem;
+  font-family: inherit;
+  border: solid 1px var(--dark-c);
+  background-color: var(--light-c);
+  border-radius: 0.25rem;
+}
+.control-bar__top button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.4rem;
+  background-color: var(--light-c);
+  border-radius: 0.25rem;
+  border: solid 1px var(--dark-c);
+}
+.control-bar__top button img {
+  width: 90%;
+}
+.control-bar__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.control-bar__bottom button {
+  flex: 1;
+  height: 2.4rem;
+  background-color: var(--light-c);
+  border-radius: 0.25rem;
+  border: solid 1px var(--dark-c);
+  font-size: 1rem;
+  line-height: 1.25rem;
+}
+.control-bar__import {
+  flex: 1;
+}
+.control-bar__import input {
+  display: none;
+}
+.control-bar__import button {
+  width: 100%;
+}
