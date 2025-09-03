@@ -1,7 +1,7 @@
 import { type Movie } from '../types/MovieTypes';
 
-const API_URL = import.meta.env.API_URL
-const API_TOKEN = import.meta.env.API_TOKEN;
+const API_URL = import.meta.env.VITE_API_URL;
+const API_TOKEN = import.meta.env.VITE_API_TOKEN;
 
 export async function getAllMovies(query?: string): Promise<Movie[]> {
   try {
@@ -15,6 +15,8 @@ export async function getAllMovies(query?: string): Promise<Movie[]> {
         'Authorization': API_TOKEN,
       },
     });
+
+    console.log(API_TOKEN)
 
     if (!response1.ok) {
       console.error(`Error is occured. HTTP ${response1.status}`);
