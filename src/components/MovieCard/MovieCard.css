@@ -16,6 +16,7 @@
   font-size: 1.75rem;
   line-height: 2rem;
   font-weight: 600;
+  text-align: left;
 }
 .movie__card > button span {
   font-size: 2.5rem;

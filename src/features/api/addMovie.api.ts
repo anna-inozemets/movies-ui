@@ -1,27 +1,26 @@
 import { type MoviePayload } from '../types/MovieTypes'
-
-const API_URL = import.meta.env.VITE_API_URL
-const API_TOKEN = import.meta.env.VITE_API_TOKEN;
+import { API_URL, baseHeaders } from './config.api';
 
 
 export async function addMovie(payload: MoviePayload) {
-  try {
-    const response = await fetch(`${API_URL}/movies`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': API_TOKEN,
-      },
-      body: JSON.stringify(payload),
-    });
+  const response = await fetch(`${API_URL}/movies`, {
+    method: 'POST',
+    headers: {
+      ...baseHeaders,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });
 
-    if (!response.ok) {
-      console.error(`Error is occured. HTTP ${response.status}`);
-    }
-
-    return await response.json();
-  } catch (error: any) {
-    console.error(`Error is occured: ${error}`)
+  if (!response.ok) {
+    throw new Error(`Request failed. HTTP ${response.status}`);
   }
-}
 
+  const data = await response.json();
+
+  if (data.status === 0) {
+    throw new Error(data.error.code || 'Unknown server error');
+  }
+
+  return data;
+}

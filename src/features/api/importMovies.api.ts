@@ -1,26 +1,19 @@
-const API_URL = import.meta.env.VITE_API_URL
-const API_TOKEN = import.meta.env.VITE_API_TOKEN;
+import { API_URL, baseHeaders } from './config.api';
 
 export async function importMovies(file: File) {
-  try {
-    const form = new FormData();
-    form.append("movies", file);
+  const form = new FormData();
+  form.append("movies", file);
 
-    const response = await fetch(`${API_URL}/movies/import`, {
-      method: "POST",
-      headers: {
-        "Authorization": API_TOKEN,
-      },
-      body: form,
-    });
+  const response = await fetch(`${API_URL}/movies/import`, {
+    method: "POST",
+    headers: baseHeaders,
+    body: form,
+  });
 
-    if (!response.ok) {
-      console.error(`Error is occured. HTTP ${response.status}`);
-    }
-
-    return await response.json();
-  } catch (error: any) {
-    console.error(`Error is occured: ${error}`)
+  if (!response.ok) {
+    throw new Error(`Request failed. HTTP ${response.status}`);
   }
+
+  return await response.json();
 }
 

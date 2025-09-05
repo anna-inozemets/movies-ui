@@ -1,4 +1,5 @@
 export type MovieFormat = 'VHS' | 'DVD' | 'Blu-Ray';
+export type MovieTitleSort = 'ASC' | 'DESC';
 export type MoviePayload = {
   title: string;
   year: number;
@@ -17,4 +18,8 @@ export type Movie = {
   year: number;
   format: MovieFormat;
   actors: ActorDetailed[]
+};
+export type MoviesPageResponse = {
+  movies: Movie[];
+  total: number;
 };

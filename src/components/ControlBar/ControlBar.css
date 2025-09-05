@@ -21,6 +21,7 @@
   border-radius: 0.25rem;
 }
 .control-bar__top button {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,9 +30,27 @@
   background-color: var(--light-c);
   border-radius: 0.25rem;
   border: solid 1px var(--dark-c);
+  transition: all 0.25s linear;
 }
 .control-bar__top button img {
   width: 90%;
+}
+.control-bar__top button span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 1.5px;
+  width: 80%;
+  background-color: var(--dark-c);
+}
+.control-bar__top button span:first-child {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.control-bar__top button span:last-child {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+.control-bar__top button:hover {
+  transform: scale(1.05);
 }
 .control-bar__bottom {
   display: flex;

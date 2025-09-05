@@ -1,0 +1,30 @@
+.pagination {
+  padding: 3rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+.pagination__nav a, .pagination__page a, .pagination__break {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  aspect-ratio: 1 / 1;
+  width: 2.5rem;
+  font-size: 1.2rem;
+  padding: 0.5rem;
+  border-radius: 50%;
+  border: solid 1px var(--dark-c);
+  background-color: var(--light-c);
+  cursor: pointer;
+}
+.pagination__page.active a {
+  font-weight: 700;
+  border-width: 2px;
+  background-color: #fff;
+}
+.pagination__nav.disabled a {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

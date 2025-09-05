@@ -1,57 +1,18 @@
-import { type Movie } from '../types/MovieTypes';
+import { type Movie, type MoviesPageResponse } from '../types/MovieTypes';
+import { API_URL, baseHeaders } from './config.api';
 
-const API_URL = import.meta.env.VITE_API_URL;
-const API_TOKEN = import.meta.env.VITE_API_TOKEN;
+export async function getAllMovies(offset: number = 0, limit: number = 12): Promise<MoviesPageResponse> {
+  const url = `${API_URL}/movies?limit=${limit}&offset=${offset}`;
 
-export async function getAllMovies(query?: string): Promise<Movie[]> {
-  try {
-    const urlTitle =
-      query && query.trim()
-        ? `${API_URL}/movies?title=${encodeURIComponent(query.trim())}`
-        : `${API_URL}/movies`;
+  const response = await fetch(url, { headers: baseHeaders });
 
-    const response1 = await fetch(urlTitle, {
-      headers: {
-        'Authorization': API_TOKEN,
-      },
-    });
-
-    console.log(API_TOKEN)
-
-    if (!response1.ok) {
-      console.error(`Error is occured. HTTP ${response1.status}`);
-    }
-
-    const resul1 = await response1.json();
-    let merged: Movie[] = (resul1?.data ?? []) as Movie[];
-
-    if (query && query.trim()) {
-      const response2 = await fetch(
-        `${API_URL}/movies?actor=${encodeURIComponent(query.trim())}`,
-        {
-          headers: {
-            'Authorization': API_TOKEN,
-          },
-        }
-      );
-
-      if (response2.ok) {
-        const resul2 = await response2.json();
-        const byActor: Movie[] = (resul2?.data ?? []) as Movie[];
-        const map = new Map<number, Movie>();
-
-        for (const m of [...merged, ...byActor]) {
-          map.set(m.id, m);
-        }
-
-        merged = Array.from(map.values());
-      }
-    }
-
-    return merged;
-  } catch (error: any) {
-    console.error(`Error is occured: ${error}`);
-    return Promise.reject(error);
+  if (!response.ok) {
+    throw new Error(`Request failed. HTTP ${response.status}`);
   }
-}
 
+  const json = await response.json();
+  const movies: Movie[] = (json.data || []) as Movie[];
+  const total: number = (json.meta.total as number) || 0;
+
+  return { movies, total };
+}

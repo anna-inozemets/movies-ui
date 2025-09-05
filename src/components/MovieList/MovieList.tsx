@@ -1,54 +1,78 @@
-import { useEffect, useState } from "react";
-import { getAllMovies } from "../../features/api/getAllMovies.api";
-import { MovieCard } from "../MovieCard";
-import { type Movie } from '../../features/types/MovieTypes';
-import './MovieList.css'
+import { useEffect, useState } from 'react';
+import { Pagination } from '../Pagination'
+import { MovieCard } from '../MovieCard';
+import { Loader } from '../Loader';
+import { useMovies } from '../../features/hooks/useMovies';
+import { type MovieTitleSort } from '../../features/types/MovieTypes'
+import './MovieList.css';
 
 type Props = {
-  query: string;
-  sortAZ: boolean;
+  query?: string;
+  sort?: MovieTitleSort;
   reloadKey?: number;
 };
 
-export function MoviesList({ query, sortAZ, reloadKey = 0 }: Props) {
-  const [items, setItems] = useState<Movie[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+export function MoviesList({ query = '', sort = 'ASC', reloadKey = 0 }: Props) {
+  const [basedPage, setBasedPage] = useState(0);
+  const [refreshKey, setRefreshKey] = useState(0);
+  const limit = 12;
+  const offset = basedPage * limit;
+  const normalizedQuery = query.trim();
+  const combinedRefreshKey = reloadKey + refreshKey;
+  const { movies, total, loading, error } = useMovies({ offset, limit, query: normalizedQuery, sort, refreshKey: combinedRefreshKey });
+  const pageCount = Math.max(1, Math.ceil(total / limit));
 
-  const fetchAll = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const data = await getAllMovies(query);
+  useEffect(() => {
+    if (basedPage > 0 && basedPage >= pageCount) {
+      setBasedPage(Math.max(0, pageCount - 1));
+    }
+  }, [pageCount, basedPage]);
 
-      data.sort((a, b) => a.title.localeCompare(b.title, "uk", { sensitivity: "base" }));
-      if (!sortAZ) data.reverse();
+  useEffect(() => {
+    setBasedPage(0);
+  }, [normalizedQuery, sort, reloadKey]);
 
-      setItems(data);
-    } catch (e: any) {
-      setError(e?.message || "Не вдалося завантажити фільми");
-    } finally {
-      setLoading(false);
+  if (loading) {
+    return (
+      <Loader />
+    )
+  }
+
+  if (error) {
+    return (
+    <div className='error'>
+      <p>Sorry, the error is occured😢</p>
+    </div>
+    )
+  }
+
+  if (movies.length === 0) {
+    return (
+      <div className='movie__list--empty'>
+        <p>List is empty 🙈</p>
+      </div>
+    );
+  }
+
+  const handleDeleted = () => {
+    if (movies.length === 1 && basedPage > 0) {
+      setBasedPage(previousPage => Math.max(0, previousPage - 1));
+    } else {
+      setRefreshKey(key => key + 1);
     }
   };
-
-  useEffect(() => { fetchAll(); }, [query, sortAZ, reloadKey]);
-
-  const handleDeleted = (id: number) => {
-    setItems(prev => prev.filter(m => m.id !== id));
-  };
-
-  if (loading) return <p style={{ padding: 16 }}>Loading...</p>;
-  if (error) return <p style={{ padding: 16, color: "crimson" }}>Error: {error}</p>;
-  if (items.length === 0) return <div style={{ padding: 16 }}><p>List is empty.</p></div>;
 
   return (
     <div className="movie__list">
       <div className="container">
-        {items.map(m => (
+        {movies.map((m) => (
           <MovieCard key={m.id} id={m.id} title={m.title} onDeleted={handleDeleted} />
         ))}
       </div>
+      {pageCount > 1 && (
+        <Pagination pageCount={pageCount} basedPage={basedPage} onChange={setBasedPage} disabled={loading} />
+      )}
     </div>
   );
 }
+

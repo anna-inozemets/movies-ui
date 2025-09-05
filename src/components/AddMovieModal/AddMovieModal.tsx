@@ -1,20 +1,18 @@
 import { useState } from 'react';
-import './AddMovieModal.css';
+import { toast } from 'react-toastify';
+import { validateMovieForm } from '../../features/validation/movieFormValidator';
 import { addMovie } from '../../features/api/addMovie.api';
-
 import { type MovieFormat } from '../../features/types/MovieTypes';
+import './AddMovieModal.css';
 
-type Props = {
-  open: boolean;
-  onClose: () => void;
-};
+type Props = { open: boolean; onClose: () => void };
 
 export const AddMovieModal = ({ open, onClose }: Props) => {
   const [title, setTitle] = useState('');
   const [year, setYear] = useState<number | ''>('');
   const [format, setFormat] = useState<MovieFormat>('VHS');
   const [actors, setActors] = useState<string[]>(['']);
-  const [errors, setErrors] = useState<string[]>([]);
+  const [, setErrors] = useState<string[]>([]);
 
   const handleActorChange = (i: number, value: string) => {
     const newActors = [...actors];
@@ -22,66 +20,35 @@ export const AddMovieModal = ({ open, onClose }: Props) => {
     setActors(newActors);
   };
 
-  const addActor = () => setActors([...actors, ""]);
-  const removeActor = (i: number) => setActors(actors.filter((_, idx) => idx !== i));
+  const addActor = () => setActors([...actors, '']);
+  const removeActor = (actorId: number) => setActors(actors.filter((_, id) => id !== actorId));
 
-  const collapseSpaces = (s: string) => s.replace(/\s+/g, " ").trim();
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const nextErrors: string[] = [];
+    const { errors: nextErrors, payload } = validateMovieForm({ title, year, format, actors });
 
-    // нормалізація
-    const normalizedTitle = collapseSpaces(title);
-    const normalizedYear = typeof year === "number" ? year : Number(year);
-    const normalizedActors = actors
-      .map(a => collapseSpaces(a))
-      .filter(a => a.length > 0);
-
-    // валідації
-    if (!normalizedTitle) {
-      nextErrors.push("Please, add film's title");
-    }
-
-    if (!Number.isFinite(normalizedYear)) {
-      nextErrors.push("The year should be a number");
-    } else {
-      if (normalizedYear < 1895) nextErrors.push("The year couldn't be less than 1895");
-      if (normalizedYear > 2035) nextErrors.push("The year couldn't be more than 2035");
-    }
-
-    if (normalizedActors.length === 0) {
-      nextErrors.push("Add at least one actor");
-    }
-
-    if (!["VHS", "DVD", "Blu-Ray"].includes(format)) {
-      nextErrors.push("Chose one of the format");
-    }
-
-    if (nextErrors.length) {
+    if (nextErrors.length || !payload) {
       setErrors(nextErrors);
-      console.log(errors);
+      nextErrors.forEach(msg => toast.error(msg));
       return;
     }
 
-    const payload = {
-      title: normalizedTitle,
-      year: normalizedYear,
-      format,
-      actors: normalizedActors
-    };
-
     try {
       await addMovie(payload);
-    } catch {
-      console.log('erroe')
-    } finally {
+      toast.success('Movie added successfully');
       setTitle('');
       setYear('');
       setFormat('VHS');
       setActors(['']);
       setErrors([]);
       onClose();
+    } catch (error: any) {
+      if (error.message === 'MOVIE_EXISTS') {
+        toast.error('A movie with this title already exists');
+      } else {
+        toast.error(error.message || 'Failed to add movie 😢');
+      }
     }
   };
 
@@ -91,12 +58,12 @@ export const AddMovieModal = ({ open, onClose }: Props) => {
         <button type="button" className="modal__button-close" onClick={onClose}><span></span><span></span></button>
         <form className="modal__form" onSubmit={handleSubmit}>
           <label htmlFor="title">
-            <p>Title</p>
-            <input id="title" type="text" name="title" placeholder="Enter film's title here" value={title} onChange={e => setTitle(e.target.value)} />
+            <p>Title*</p>
+            <input id="title" type="text" name="title" placeholder="Enter title" value={title} onChange={e => setTitle(e.target.value)} />
           </label>
           <label htmlFor="year">
-            <p>Year</p>
-            <input id="year" type="number" name="year" min="1895" max="2035" placeholder="Enter film's foundation year here" value={year} onChange={e => setYear(e.target.value ? Number(e.target.value) : "")} />
+            <p>Year*</p>
+            <input id="year" type="number" name="year" placeholder="Enter release year" value={year} onChange={e => setYear(e.target.value ? Number(e.target.value) : "")} />
           </label>
           <div className="modal__movie-format">
             <label htmlFor="vhs" className={format === "VHS" ? "active" : ""}>
@@ -113,14 +80,14 @@ export const AddMovieModal = ({ open, onClose }: Props) => {
             </label>
           </div>
           <div className="modal_actors">
-            <p>Actors</p>
+            <p>Actors*</p>
               {actors.map((actor, i) => (
                 <div key={i} className="modal_actor-input-wrapper">
                   <input
                     type="text"
                     value={actor}
                     onChange={e => handleActorChange(i, e.target.value)}
-                    placeholder="Name Surname"
+                    placeholder="Enter actor's name"
                   />
                   {actors.length > 1 && (
                     <button type="button" onClick={() => removeActor(i)}>–</button>
@@ -132,7 +99,7 @@ export const AddMovieModal = ({ open, onClose }: Props) => {
               </button>
             </div>
             <button type="submit" className="modal_send">
-              Зберегти
+              Add new film
             </button>
         </form>
       </div>

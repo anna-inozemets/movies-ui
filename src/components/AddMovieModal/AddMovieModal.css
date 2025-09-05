@@ -56,9 +56,6 @@
   transform: translate(-50%, -50%) rotate(-225deg);
   background-color: var(--accent-c);
 }
-.modal__form {
-
-}
 .modal__form label {
   display: block;
   padding: 0.75rem 0;

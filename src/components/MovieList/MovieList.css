@@ -1,11 +1,20 @@
 .movie__list {
-  padding: 1.5rem 0;
+  padding: 1.5rem 0 0;
 }
 .movie__list .container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   row-gap: 2rem;
   column-gap: 1.25rem;
+}
+.movie__list--empty {
+  padding: 1.5rem 0;
+}
+.movie__list--empty p {
+  text-align: center;
+  font-size: 1.1rem;
+  line-height: 125%;
+  font-weight: 700;
 }
 
 @media screen and (max-width: 1024px) {
