@@ -20,11 +20,14 @@ API посилання та токен конфігуруються через �
 
 ---
 
-## 🛠️ Запуск проекту
+## 🛠️ Запуск Бекенду (https://hub.docker.com/r/webbylabhub/movies)
 
-1. Збірка docker образу
-  docker build -t your_dockerhub_username/movies-ui .
-2. Запуск docker контейнера
-  docker run --rm --name movies-ui -p 3000:3000 -e API_URL=http://localhost:8000/api/v1 -e API_TOKEN=eyJhbGciOi.. your_dockerhub_username/movies-ui
-3. Відкрити в браузері за посиланням, наприклад
-  http://localhost:3000
+1. docker pull webbylabhub/movies
+2. docker run --name movies -p 8000:8000 webbylabhub/movies
+
+## 🛠️ Запуск Фронтенду
+
+1. Встановлення пакетів: npm install
+2. Збірка docker образу: docker build -t your_account/movies-ui .
+3. Запуск docker контейнера: docker run --rm --name movies-ui  -p 3000:3000  -e API_URL=http://localhost:8000/api/v1 your_acocunt/movies-ui
+4. Відкрити в браузері за посиланням, наприклад http://localhost:3000
